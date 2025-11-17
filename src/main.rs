@@ -1,13 +1,33 @@
+use std::io;
+use std::cmp::Ordering;
 
 fn main() {
-    let x:u32 = 10;
-    assert_eq!("u32".to_string(), type_of(&x));
-    println!("Success!")
-}
+    loop{
+        const BENCHMARK: i32 = 100;
 
-fn type_of<T>(_:&T) -> String{
-    format!("{}", std::any::type_name::<T>())
-}
+        //Define an empty string
+        let mut val = String::new();
 
+        //Allow users to input a number
+        println!("Please input a number");
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        //Format and Check if val is a valid number
+        let val: i32 = match val.trim().parse() {
+            Ok(val) => val,
+            Err(_) => continue,
+        };
+        //Compare with the benchmark value
+        match val.cmp(&BENCHMARK){
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too large!"),
+            Ordering::Equal => {
+                println!("Correct!");
+                break;
+            }
+        }
+    }
+}
 
 
